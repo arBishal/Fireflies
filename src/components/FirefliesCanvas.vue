@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 
-// Reference to the <canvas> element
 const canvas = ref(null)
 
 onMounted(() => {
@@ -9,11 +8,15 @@ onMounted(() => {
   const ctx = el.getContext('2d')
   let animationFrameId
 
-  // Set initial canvas size
+  // Canvas dimensions
   let w = (el.width = window.innerWidth)
   let h = (el.height = window.innerHeight)
 
-  // Handle window resize
+  // Mouse state
+  const mouse = { x: null, y: null }
+  const interactionRadius = 120
+
+  // Resize handler — scales fireflies proportionally
   const handleResize = () => {
     const oldW = w
     const oldH = h
@@ -23,7 +26,6 @@ onMounted(() => {
     const scaleX = w / oldW
     const scaleY = h / oldH
 
-    // Reposition fireflies proportionally
     for (let f of fireflies) {
       f.x *= scaleX
       f.y *= scaleY
@@ -31,25 +33,46 @@ onMounted(() => {
   }
   window.addEventListener('resize', handleResize)
 
-  // === CONFIGURATION SETTINGS ===
-  const baseCount = 48 // Number of fireflies on large screens
-  const minAlpha = 0.3 // Minimum glow intensity (transparency)
-  const maxAlpha = 1 // Maximum glow intensity
-  const pulseSpeed = 0.015 // Speed at which fireflies pulse (increase/decrease glow)
-  const radiusRange = [2, 5] // Radius size range of each firefly
-  const speedRangeX = [-0.75, 0.75] // Horizontal speed range
-  const speedRangeY = [-0.75, 0.75] // Vertical (upward) speed range
+  // Mouse tracking
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX
+    mouse.y = e.clientY
+  })
 
-  // Determine firefly count based on screen width
+  // Click to scatter nearby fireflies
+  window.addEventListener('click', () => {
+    for (let f of fireflies) {
+      const dx = f.x - mouse.x
+      const dy = f.y - mouse.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      if (dist < interactionRadius) {
+        const force = 3
+        const normX = dx / dist
+        const normY = dy / dist
+
+        f.vx = normX * force
+        f.vy = normY * force
+      }
+    }
+  })
+
+  // Configuration
+  const baseCount = 64
+  const minAlpha = 0.3
+  const maxAlpha = 1
+  const pulseSpeed = 0.015
+  const radiusRange = [2, 5]
+  const speedRangeX = [-0.5, 0.5]
+  const speedRangeY = [-0.5, 0.5]
+
+  // Firefly count based on screen size
   const width = window.innerWidth
   let NUM_FIREFLIES = baseCount
-  if (width < 640) {
-    NUM_FIREFLIES = Math.floor(baseCount / 2)
-  } else if (width < 1024) {
-    NUM_FIREFLIES = Math.floor(baseCount / 1.5)
-  }
+  if (width < 640) NUM_FIREFLIES = Math.floor(baseCount / 2)
+  else if (width < 1024) NUM_FIREFLIES = Math.floor(baseCount / 1.5)
 
-  // Generate fireflies with randomized properties
+  // Firefly array
   const fireflies = Array.from({ length: NUM_FIREFLIES }).map(() => ({
     x: Math.random() * w,
     y: Math.random() * h,
@@ -58,6 +81,8 @@ onMounted(() => {
     dy: Math.random() * (speedRangeY[1] - speedRangeY[0]) + speedRangeY[0],
     alpha: Math.random() * (maxAlpha - minAlpha) + minAlpha,
     pulseDir: Math.random() > 0.5 ? 1 : -1,
+    vx: 0, // Repulsion velocity x
+    vy: 0, // Repulsion velocity y
   }))
 
   // Main animation loop
@@ -65,7 +90,7 @@ onMounted(() => {
     ctx.clearRect(0, 0, w, h)
 
     for (let f of fireflies) {
-      // Update glow intensity (pulsing effect)
+      // Glow pulsing
       f.alpha += f.pulseDir * pulseSpeed
       if (f.alpha >= maxAlpha) {
         f.alpha = maxAlpha
@@ -75,7 +100,28 @@ onMounted(() => {
         f.pulseDir = 1
       }
 
-      // Draw the firefly
+      const velocityMagnitude = Math.hypot(f.vx, f.vy)
+
+      if (velocityMagnitude > 0.1) {
+        // Continue repulsion motion
+        f.x += f.vx
+        f.y += f.vy
+        f.vx *= 0.9
+        f.vy *= 0.9
+      } else if (mouse.x !== null && mouse.y !== null) {
+        // Start attraction when repulsion stops
+        const dx = mouse.x - f.x
+        const dy = mouse.y - f.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+
+        if (dist < interactionRadius) {
+          const attractionStrength = 0.02
+          f.x += dx * attractionStrength
+          f.y += dy * attractionStrength
+        }
+      }
+
+      // Draw firefly
       ctx.beginPath()
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2)
       ctx.fillStyle = `rgba(255, 255, 150, ${f.alpha})`
@@ -83,13 +129,13 @@ onMounted(() => {
       ctx.shadowBlur = 12
       ctx.fill()
 
-      // Update position
+      // Base drift
       f.x += f.dx
       f.y += f.dy
 
-      // Handle screen boundaries
-      if (f.x < 0 || f.x > w) f.dx *= -1 // Bounce horizontally
-      if (f.y < 0) f.y = h // Wrap from top to bottom
+      // Screen wrap and bounce
+      if (f.x < 0 || f.x > w) f.dx *= -1
+      if (f.y < 0) f.y = h
       if (f.y > h) f.y = 0
     }
 
@@ -98,10 +144,11 @@ onMounted(() => {
 
   animate()
 
-  // Cleanup on component unmount
   onBeforeUnmount(() => {
     cancelAnimationFrame(animationFrameId)
     window.removeEventListener('resize', handleResize)
+    window.removeEventListener('mousemove', () => {})
+    window.removeEventListener('click', () => {})
   })
 })
 </script>
