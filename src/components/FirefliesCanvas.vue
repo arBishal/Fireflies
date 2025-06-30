@@ -14,7 +14,7 @@ onMounted(() => {
 
   // Mouse state
   const mouse = { x: null, y: null }
-  const interactionRadius = 120
+  const interactionRadius = 160
 
   // Resize handler — scales fireflies proportionally
   const handleResize = () => {
@@ -59,7 +59,7 @@ onMounted(() => {
 
   // Configuration
   const baseCount = 64
-  const minAlpha = 0.3
+  const minAlpha = 0.1
   const maxAlpha = 1
   const pulseSpeed = 0.015
   const radiusRange = [2, 5]
@@ -124,9 +124,9 @@ onMounted(() => {
       // Draw firefly
       ctx.beginPath()
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(255, 255, 150, ${f.alpha})`
-      ctx.shadowColor = `rgba(255, 255, 150, ${f.alpha})`
-      ctx.shadowBlur = 12
+      ctx.fillStyle = `rgba(255, 255, 100, ${f.alpha})`
+      ctx.shadowColor = `rgba(255, 255, 100, ${f.alpha})`
+      ctx.shadowBlur = 8
       ctx.fill()
 
       // Base drift
