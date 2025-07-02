@@ -1,7 +1,11 @@
-<script setup></script>
+<script setup>
+import FireflyCanvas from './components/FirefliesCanvas.vue'
+import ControlBar from './components/ControlBar.vue'
+</script>
 
 <template>
-  <main className="flex items-center justify-center bg-black text-white h-dvh">Fireflies</main>
+  <main>
+    <FireflyCanvas />
+    <ControlBar />
+  </main>
 </template>
-
-<style scoped></style>
