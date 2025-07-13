@@ -4,6 +4,8 @@ This simulation was inspired by personal fascination and nostalgia for fireflies
 
 This is a responsive, interactive firefly animation built with Vue 3 and the Canvas API. Fireflies drift across the screen, pulse with light, and react to user interaction.
 
+[Try Live Demo](https://fireflies-canvas.vercel.app/)
+
 ## Tech Stack
 
 - Vue 3 (Composition API)
