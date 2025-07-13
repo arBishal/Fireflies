@@ -62,35 +62,41 @@ onBeforeUnmount(() => {
       class="flex justify-center items-center gap-4 md:gap-6 mt-2 border border-white/20 px-4 py-2 md:px-6 md:py-3 rounded-full"
     >
       <!-- COUNT -->
-      <div class="relative transition-all duration-300">
+      <div class="relative">
         <button class="flex flex-col items-center text-xs" @click="toggleSection('count')">
           <Squares2X2Icon
             class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
           />
         </button>
-        <div
-          v-show="activeSection === 'count'"
-          class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform transition-all duration-300 opacity-0 scale-95"
-          :class="{
-            'opacity-100 scale-100 pointer-events-auto': activeSection === 'count',
-          }"
+        <Transition
+          enter-active-class="transition duration-300"
+          enter-from-class="opacity-0 scale-95"
+          enter-to-class="opacity-100 scale-100"
+          leave-active-class="transition duration-300"
+          leave-from-class="opacity-100 scale-100"
+          leave-to-class="opacity-0 scale-95"
         >
-          <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
-            <button
-              v-for="(preset, index) in PRESETS"
-              :key="'count-' + index"
-              @click="fireflyCountLevel = index"
-              class="flex items-center justify-center p-2 transition-all duration-300"
-              :class="
-                fireflyCountLevel === index
-                  ? 'bg-white/20 rounded-full'
-                  : 'opacity-50 hover:opacity-100'
-              "
-            >
-              <component :is="preset.icon" class="w-4 h-4" />
-            </button>
+          <div
+            v-if="activeSection === 'count'"
+            class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform"
+          >
+            <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
+              <button
+                v-for="(preset, index) in PRESETS"
+                :key="'count-' + index"
+                @click="fireflyCountLevel = index"
+                class="flex items-center justify-center p-2 transition-all duration-300"
+                :class="
+                  fireflyCountLevel === index
+                    ? 'bg-white/20 rounded-full'
+                    : 'opacity-50 hover:opacity-100'
+                "
+              >
+                <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
 
       <!-- SPEED -->
@@ -100,27 +106,33 @@ onBeforeUnmount(() => {
             class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
           />
         </button>
-        <div
-          v-show="activeSection === 'speed'"
-          class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform transition-all duration-300 opacity-0 scale-95"
-          :class="{
-            'opacity-100 scale-100 pointer-events-auto': activeSection === 'speed',
-          }"
+        <Transition
+          enter-active-class="transition duration-300"
+          enter-from-class="opacity-0 scale-95"
+          enter-to-class="opacity-100 scale-100"
+          leave-active-class="transition duration-300"
+          leave-from-class="opacity-100 scale-100"
+          leave-to-class="opacity-0 scale-95"
         >
-          <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
-            <button
-              v-for="(preset, index) in PRESETS"
-              :key="'speed-' + index"
-              @click="speedLevel = index"
-              class="flex items-center justify-center p-2 transition-all duration-300"
-              :class="
-                speedLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
-              "
-            >
-              <component :is="preset.icon" class="w-4 h-4" />
-            </button>
+          <div
+            v-if="activeSection === 'speed'"
+            class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform"
+          >
+            <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
+              <button
+                v-for="(preset, index) in PRESETS"
+                :key="'speed-' + index"
+                @click="speedLevel = index"
+                class="flex items-center justify-center p-2 transition-all duration-300"
+                :class="
+                  speedLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
+                "
+              >
+                <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
 
       <!-- SIZE -->
@@ -130,27 +142,33 @@ onBeforeUnmount(() => {
             class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
           />
         </button>
-        <div
-          v-show="activeSection === 'size'"
-          class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform transition-all duration-300 opacity-0 scale-95"
-          :class="{
-            'opacity-100 scale-100 pointer-events-auto': activeSection === 'size',
-          }"
+        <Transition
+          enter-active-class="transition duration-300"
+          enter-from-class="opacity-0 scale-95"
+          enter-to-class="opacity-100 scale-100"
+          leave-active-class="transition duration-300"
+          leave-from-class="opacity-100 scale-100"
+          leave-to-class="opacity-0 scale-95"
         >
-          <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
-            <button
-              v-for="(preset, index) in PRESETS"
-              :key="'size-' + index"
-              @click="sizeLevel = index"
-              class="flex items-center justify-center p-2 transition-all duration-300"
-              :class="
-                sizeLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
-              "
-            >
-              <component :is="preset.icon" class="w-4 h-4" />
-            </button>
+          <div
+            v-if="activeSection === 'size'"
+            class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform"
+          >
+            <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
+              <button
+                v-for="(preset, index) in PRESETS"
+                :key="'size-' + index"
+                @click="sizeLevel = index"
+                class="flex items-center justify-center p-2 transition-all duration-300"
+                :class="
+                  sizeLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
+                "
+              >
+                <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
 
       <!-- COLOR -->
@@ -160,28 +178,34 @@ onBeforeUnmount(() => {
             class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
           />
         </button>
-        <div
-          v-show="activeSection === 'color'"
-          class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform transition-all duration-300 opacity-0 scale-95"
-          :class="{
-            'opacity-100 scale-100 pointer-events-auto': activeSection === 'color',
-          }"
+        <Transition
+          enter-active-class="transition duration-300"
+          enter-from-class="opacity-0 scale-95"
+          enter-to-class="opacity-100 scale-100"
+          leave-active-class="transition duration-300"
+          leave-from-class="opacity-100 scale-100"
+          leave-to-class="opacity-0 scale-95"
         >
-          <div class="flex gap-2 bg-black/80 rounded-xl px-4 py-2">
-            <div
-              v-for="color in COLOR_OPTIONS"
-              :key="color"
-              :style="{ backgroundColor: color }"
-              @click="toggleColor(color)"
-              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300"
-              :class="
-                selectedColors.includes(color)
-                  ? 'ring-2 ring-offset-1 ring-white/50'
-                  : 'opacity-50 hover:opacity-80'
-              "
-            ></div>
+          <div
+            v-if="activeSection === 'color'"
+            class="absolute bottom-full mb-3 sm:mb-4 left-1/2 -translate-x-1/2 transform"
+          >
+            <div class="flex gap-4 bg-black/80 rounded-xl px-4 py-3">
+              <div
+                v-for="color in COLOR_OPTIONS"
+                :key="color"
+                :style="{ backgroundColor: color }"
+                @click="toggleColor(color)"
+                class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300"
+                :class="
+                  selectedColors.includes(color)
+                    ? 'ring-2 ring-offset-1 ring-white/50'
+                    : 'opacity-50 hover:opacity-80'
+                "
+              ></div>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
     </div>
   </div>

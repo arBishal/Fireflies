@@ -6,6 +6,6 @@ import ControlBar from './components/ControlBar.vue'
 <template>
   <main>
     <FireflyCanvas />
-    <ControlBar />
+    <!-- <ControlBar /> -->
   </main>
 </template>
