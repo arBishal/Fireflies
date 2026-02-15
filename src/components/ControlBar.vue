@@ -94,7 +94,10 @@ onBeforeUnmount(() => {
         <Tooltip text="Change Population">
           <button class="flex flex-col items-center text-xs" @click="toggleSection('count')">
             <Squares2X2Icon
-              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 active:scale-90"
+              :style="{ '--hover-color': selectedColors[0] }"
+              @mouseenter="$event.currentTarget.style.color = selectedColors[0]"
+              @mouseleave="$event.currentTarget.style.color = ''"
             />
           </button>
         </Tooltip>
@@ -134,7 +137,9 @@ onBeforeUnmount(() => {
         <Tooltip text="Change Speed">
           <button class="flex flex-col items-center text-xs" @click="toggleSection('speed')">
             <BoltIcon
-              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 active:scale-90"
+              @mouseenter="$event.currentTarget.style.color = selectedColors[0]"
+              @mouseleave="$event.currentTarget.style.color = ''"
             />
           </button>
         </Tooltip>
@@ -172,7 +177,9 @@ onBeforeUnmount(() => {
         <Tooltip text="Change Size">
           <button class="flex flex-col items-center text-xs" @click="toggleSection('size')">
             <ArrowsPointingOutIcon
-              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 active:scale-90"
+              @mouseenter="$event.currentTarget.style.color = selectedColors[0]"
+              @mouseleave="$event.currentTarget.style.color = ''"
             />
           </button>
         </Tooltip>
@@ -210,7 +217,9 @@ onBeforeUnmount(() => {
         <Tooltip text="Change Swatch">
           <button class="flex flex-col items-center text-xs" @click="toggleSection('color')">
             <SwatchIcon
-              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 active:scale-90"
+              @mouseenter="$event.currentTarget.style.color = selectedColors[0]"
+              @mouseleave="$event.currentTarget.style.color = ''"
             />
           </button>
         </Tooltip>
