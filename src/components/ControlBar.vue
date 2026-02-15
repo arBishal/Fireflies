@@ -8,22 +8,24 @@ import {
 } from '@heroicons/vue/24/outline'
 
 import { PRESETS, COLOR_OPTIONS } from '../constants/constants.js'
+import Tooltip from './Tooltip.vue'
+
+const emit = defineEmits(['update:speedLevel', 'update:countLevel', 'update:sizeLevel', 'update:selectedColors'])
 
 const root = ref(null)
 
 const activeSection = ref(null)
-const fireflyCountLevel = ref(2)
-const speedLevel = ref(2)
-const sizeLevel = ref(2)
-const selectedColors = ref(['#ffff96'])
+const fireflyCountLevel = ref(1)
+const speedLevel = ref(1)
+const sizeLevel = ref(1)
+const selectedColors = ref(['#ddff11'])
+const isFaded = ref(false)
+let fadeTimer = null
 
 const toggleColor = (color) => {
-  const i = selectedColors.value.indexOf(color)
-  if (i >= 0 && selectedColors.value.length > 1) {
-    selectedColors.value.splice(i, 1)
-  } else if (i === -1) {
-    selectedColors.value.push(color)
-  }
+  // Single selection - always replace with the clicked color
+  selectedColors.value = [color]
+  emit('update:selectedColors', [color])
 }
 
 const toggleSection = (section) => {
@@ -42,32 +44,60 @@ const handleEscape = (e) => {
   }
 }
 
+const startFadeTimer = () => {
+  clearTimeout(fadeTimer)
+  fadeTimer = setTimeout(() => {
+    isFaded.value = true
+  }, 10000) // 10 seconds
+}
+
+const handleMouseEnter = () => {
+  isFaded.value = false
+  startFadeTimer()
+}
+
+const handleMouseLeave = () => {
+  startFadeTimer()
+}
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
   document.addEventListener('keydown', handleEscape)
+  startFadeTimer() // Start the initial fade timer
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
   document.removeEventListener('keydown', handleEscape)
+  clearTimeout(fadeTimer)
 })
 </script>
 
 <template>
   <div
-    class="fixed bottom-4 right-1/2 translate-x-1/2 z-50 w-fit backdrop-blur-xs text-white"
+    class="fixed bottom-4 right-1/2 translate-x-1/2 z-50 w-fit backdrop-blur-xs text-white transition-opacity duration-500"
+    :class="{ 'opacity-25': isFaded, 'opacity-100': !isFaded }"
     ref="root"
+    @click.stop
+    @mousedown.stop
+    @mousemove.stop
+    @touchstart.stop
+    @touchmove.stop
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
     <div
       class="flex justify-center items-center gap-4 md:gap-6 mt-2 border border-white/20 px-4 py-2 md:px-6 md:py-3 rounded-full"
     >
       <!-- COUNT -->
       <div class="relative">
-        <button class="flex flex-col items-center text-xs" @click="toggleSection('count')">
-          <Squares2X2Icon
-            class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
-          />
-        </button>
+        <Tooltip text="Change Population">
+          <button class="flex flex-col items-center text-xs" @click="toggleSection('count')">
+            <Squares2X2Icon
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+            />
+          </button>
+        </Tooltip>
         <Transition
           enter-active-class="transition duration-300"
           enter-from-class="opacity-0 scale-95"
@@ -84,7 +114,7 @@ onBeforeUnmount(() => {
               <button
                 v-for="(preset, index) in PRESETS"
                 :key="'count-' + index"
-                @click="fireflyCountLevel = index"
+                @click="fireflyCountLevel = index; emit('update:countLevel', index)"
                 class="flex items-center justify-center p-2 transition-all duration-300"
                 :class="
                   fireflyCountLevel === index
@@ -101,11 +131,13 @@ onBeforeUnmount(() => {
 
       <!-- SPEED -->
       <div class="relative">
-        <button class="flex flex-col items-center text-xs" @click="toggleSection('speed')">
-          <BoltIcon
-            class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
-          />
-        </button>
+        <Tooltip text="Change Speed">
+          <button class="flex flex-col items-center text-xs" @click="toggleSection('speed')">
+            <BoltIcon
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+            />
+          </button>
+        </Tooltip>
         <Transition
           enter-active-class="transition duration-300"
           enter-from-class="opacity-0 scale-95"
@@ -122,7 +154,7 @@ onBeforeUnmount(() => {
               <button
                 v-for="(preset, index) in PRESETS"
                 :key="'speed-' + index"
-                @click="speedLevel = index"
+                @click="speedLevel = index; emit('update:speedLevel', index)"
                 class="flex items-center justify-center p-2 transition-all duration-300"
                 :class="
                   speedLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
@@ -137,11 +169,13 @@ onBeforeUnmount(() => {
 
       <!-- SIZE -->
       <div class="relative">
-        <button class="flex flex-col items-center text-xs" @click="toggleSection('size')">
-          <ArrowsPointingOutIcon
-            class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
-          />
-        </button>
+        <Tooltip text="Change Size">
+          <button class="flex flex-col items-center text-xs" @click="toggleSection('size')">
+            <ArrowsPointingOutIcon
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+            />
+          </button>
+        </Tooltip>
         <Transition
           enter-active-class="transition duration-300"
           enter-from-class="opacity-0 scale-95"
@@ -158,7 +192,7 @@ onBeforeUnmount(() => {
               <button
                 v-for="(preset, index) in PRESETS"
                 :key="'size-' + index"
-                @click="sizeLevel = index"
+                @click="sizeLevel = index; emit('update:sizeLevel', index)"
                 class="flex items-center justify-center p-2 transition-all duration-300"
                 :class="
                   sizeLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
@@ -173,11 +207,13 @@ onBeforeUnmount(() => {
 
       <!-- COLOR -->
       <div class="relative">
-        <button class="flex flex-col items-center text-xs" @click="toggleSection('color')">
-          <SwatchIcon
-            class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
-          />
-        </button>
+        <Tooltip text="Change Swatch">
+          <button class="flex flex-col items-center text-xs" @click="toggleSection('color')">
+            <SwatchIcon
+              class="w-5 h-5 md:w-6 md:h-6 transition-all duration-300 hover:text-amber-300 active:scale-90"
+            />
+          </button>
+        </Tooltip>
         <Transition
           enter-active-class="transition duration-300"
           enter-from-class="opacity-0 scale-95"

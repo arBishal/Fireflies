@@ -1,5 +1,25 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS } from '../constants/constants.js'
+
+const props = defineProps({
+  speedLevel: {
+    type: Number,
+    default: 1,
+  },
+  countLevel: {
+    type: Number,
+    default: 1,
+  },
+  sizeLevel: {
+    type: Number,
+    default: 1,
+  },
+  selectedColors: {
+    type: Array,
+    default: () => ['#fdff01'],
+  },
+})
 
 const canvas = ref(null)
 
@@ -29,28 +49,42 @@ onMounted(() => {
       f.x *= scaleX
       f.y *= scaleY
     }
+
+    // Adjust firefly count based on new screen size
+    const targetCount = getEffectiveCount(FIREFLY_COUNT_LEVELS[props.countLevel])
+    if (fireflies.length < targetCount) {
+      const toAdd = targetCount - fireflies.length
+      fireflies.push(...Array.from({ length: toAdd }).map(() => createFirefly(SIZE_LEVELS[props.sizeLevel], props.selectedColors[0])))
+    } else if (fireflies.length > targetCount) {
+      fireflies.splice(targetCount)
+    }
   }
 
   // Firefly Config
-  const baseCount = 64
   const minAlpha = 0.1
   const maxAlpha = 1
   const pulseSpeed = 0.015
-  const radiusRange = [2, 5]
   const speedRangeX = [-0.5, 0.5]
   const speedRangeY = [-0.5, 0.5]
 
-  // Count adjustment
-  let NUM_FIREFLIES = baseCount
-  const screenW = window.innerWidth
-  if (screenW < 640) NUM_FIREFLIES = Math.floor(baseCount / 2)
-  else if (screenW < 1024) NUM_FIREFLIES = Math.floor(baseCount / 1.5)
+  // Screen size multiplier for population (Tailwind breakpoints)
+  const getScreenSizeMultiplier = () => {
+    const width = window.innerWidth
+    if (width < 640) return 0.5  // Below sm
+    if (width < 768) return 0.75 // Below md
+    return 1 // md and above
+  }
 
-  // Create fireflies
-  const fireflies = Array.from({ length: NUM_FIREFLIES }).map(() => ({
+  // Calculate effective firefly count based on screen size
+  const getEffectiveCount = (baseCount) => {
+    return Math.floor(baseCount * getScreenSizeMultiplier())
+  }
+
+  // Function to create a firefly
+  const createFirefly = (sizeRange, color = '#FDE047') => ({
     x: Math.random() * w,
     y: Math.random() * h,
-    r: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
+    r: Math.random() * (sizeRange.max - sizeRange.min) + sizeRange.min,
     dx: Math.random() * (speedRangeX[1] - speedRangeX[0]) + speedRangeX[0],
     dy: Math.random() * (speedRangeY[1] - speedRangeY[0]) + speedRangeY[0],
     alpha: Math.random() * (maxAlpha - minAlpha) + minAlpha,
@@ -61,7 +95,58 @@ onMounted(() => {
     repelStartX: 0,
     repelStartY: 0,
     repelDistanceTraveled: 0,
-  }))
+    color: color,
+  })
+
+  // Create initial fireflies (all yellow by default)
+  let fireflies = Array.from({ length: getEffectiveCount(FIREFLY_COUNT_LEVELS[props.countLevel]) }).map(() =>
+    createFirefly(SIZE_LEVELS[props.sizeLevel], props.selectedColors[0])
+  )
+
+  // Watch for count/size changes and rebuild fireflies
+  watch(
+    () => [props.countLevel, props.sizeLevel],
+    ([newCount, newSize]) => {
+      const targetCount = getEffectiveCount(FIREFLY_COUNT_LEVELS[newCount])
+      const sizeRange = SIZE_LEVELS[newSize]
+
+      if (fireflies.length < targetCount) {
+        // Add new fireflies with default color
+        const toAdd = targetCount - fireflies.length
+        fireflies.push(...Array.from({ length: toAdd }).map(() => createFirefly(sizeRange, props.selectedColors[0])))
+      } else if (fireflies.length > targetCount) {
+        // Remove excess fireflies
+        fireflies.splice(targetCount)
+      }
+
+      // Update existing fireflies' sizes
+      fireflies.forEach((f) => {
+        f.r = Math.random() * (sizeRange.max - sizeRange.min) + sizeRange.min
+      })
+    }
+  )
+
+  // Watch for color changes and redistribute
+  watch(
+    () => props.selectedColors,
+    (newColors) => {
+      // Simple equal redistribution among all selected colors
+      const perColor = Math.floor(fireflies.length / newColors.length)
+      let index = 0
+      newColors.forEach((color, colorIndex) => {
+        const count = colorIndex === newColors.length - 1 
+          ? fireflies.length - index // Last color gets remainder
+          : perColor
+        for (let i = 0; i < count; i++) {
+          if (fireflies[index]) {
+            fireflies[index].color = color
+            index++
+          }
+        }
+      })
+    },
+    { deep: true }
+  )
 
   // Mouse move: update position & reset repelled
   const handleMouseMove = (e) => {
@@ -164,14 +249,27 @@ onMounted(() => {
       // Draw firefly
       ctx.beginPath()
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(255, 255, 100, ${f.alpha})`
-      ctx.shadowColor = `rgba(255, 255, 100, ${f.alpha})`
+      
+      // Convert hex color to RGB for alpha blending
+      const hexToRgb = (hex) => {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim())
+        return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+        } : { r: 255, g: 255, b: 0 }
+      }
+      
+      const rgb = hexToRgb(f.color)
+      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${f.alpha})`
+      ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${f.alpha})`
       ctx.shadowBlur = 8
       ctx.fill()
 
-      // Base drift
-      f.x += f.dx
-      f.y += f.dy
+      // Base drift (apply speed multiplier)
+      const speedMultiplier = SPEED_LEVELS[props.speedLevel]
+      f.x += f.dx * speedMultiplier
+      f.y += f.dy * speedMultiplier
 
       // Screen wrap / bounce
       if (f.x < 0 || f.x > w) f.dx *= -1

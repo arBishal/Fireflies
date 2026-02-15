@@ -8,29 +8,23 @@ import {
 
 // Icon-based preset levels
 export const PRESETS = [
-  { label: 'Very Low', icon: ChevronDoubleDownIcon },
   { label: 'Low', icon: ChevronDownIcon },
   { label: 'Default', icon: ArrowPathIcon },
   { label: 'High', icon: ChevronUpIcon },
-  { label: 'Very High', icon: ChevronDoubleUpIcon },
 ]
 
 // Value mappings for each preset level
-export const FIREFLY_COUNT_LEVELS = [10, 20, 32, 50, 80]
-export const SPEED_LEVELS = [0.25, 0.5, 1, 1.5, 2.5]
+export const FIREFLY_COUNT_LEVELS = [40, 80, 120]
+export const SPEED_LEVELS = [0.5, 1, 2]
 export const SIZE_LEVELS = [
-  { min: 0.5, max: 1 },
   { min: 1, max: 2 },
-  { min: 1, max: 4 },
-  { min: 2, max: 6 },
-  { min: 3, max: 8 },
+  { min: 2, max: 5 },
+  { min: 5, max: 8 },
 ]
 
-// Color palette options
+// Color palette options (Tailwind colors)
 export const COLOR_OPTIONS = [
-  '#ffff96', // soft yellow
-  '#a5f3fc', // cyan
-  '#f9a8d4', // pink
-  '#86efac', // green
-  '#fcd34d', // gold
+  '#ddff11', // yellow
+  '#aaff77', // lime green
+  '#93C5FD', // blueish white
 ]
