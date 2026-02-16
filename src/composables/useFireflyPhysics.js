@@ -12,6 +12,9 @@ const hexToRgb = (hex) => {
         : null
 }
 
+/**
+ * Manages firefly physics, movement, and interaction logic.
+ */
 export function useFireflyPhysics() {
     const mouse = { x: null, y: null }
 

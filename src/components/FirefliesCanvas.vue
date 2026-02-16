@@ -1,15 +1,31 @@
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue'
-import { SPEED_LEVELS, DEFAULT_COLOR } from '../constants/constants.js'
+import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS, DEFAULT_COLOR } from '../constants/constants.js'
 import { useCanvas } from '../composables/useCanvas.js'
 import { useFireflyPhysics } from '../composables/useFireflyPhysics.js'
 import { useFireflies } from '../composables/useFireflies.js'
 
 const props = defineProps({
-  speedLevel: { type: Number, default: 1 },
-  countLevel: { type: Number, default: 1 },
-  sizeLevel: { type: Number, default: 1 },
-  selectedColors: { type: Array, default: () => [DEFAULT_COLOR] },
+  speedLevel: { 
+    type: Number, 
+    default: 1,
+    validator: (v) => v >= 0 && v < SPEED_LEVELS.length 
+  },
+  countLevel: { 
+    type: Number, 
+    default: 1,
+    validator: (v) => v >= 0 && v < FIREFLY_COUNT_LEVELS.length
+  },
+  sizeLevel: { 
+    type: Number, 
+    default: 1,
+    validator: (v) => v >= 0 && v < SIZE_LEVELS.length
+  },
+  selectedColors: { 
+    type: Array, 
+    default: () => [DEFAULT_COLOR],
+    validator: (v) => v.length > 0 && v.every(c => /^#[0-9A-F]{6}$/i.test(c))
+  },
 })
 
 // Composables

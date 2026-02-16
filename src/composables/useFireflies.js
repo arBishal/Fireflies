@@ -1,6 +1,12 @@
 import { ref, watch } from 'vue'
 import { FIREFLY_COUNT_LEVELS, SIZE_LEVELS, BREAKPOINTS, FIREFLY_CONFIG } from '../constants/constants.js'
 
+/**
+ * Manages the fireflies state, creation, and population control.
+ * @param {Object} props - The component props (countLevel, sizeLevel, selectedColors)
+ * @param {Ref<number>} width - The canvas width ref
+ * @param {Ref<number>} height - The canvas height ref
+ */
 export function useFireflies(props, width, height) {
     const fireflies = ref([])
 
