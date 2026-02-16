@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { DEFAULT_COLOR } from './constants/constants.js'
 import FireflyCanvas from './components/FirefliesCanvas.vue'
 import ControlBar from './components/ControlBar.vue'
 import InfoModal from './components/InfoModal.vue'
@@ -7,7 +8,7 @@ import InfoModal from './components/InfoModal.vue'
 const speedLevel = ref(1) // Default is index 1 (1x speed)
 const countLevel = ref(1) // Default is index 1 (32 fireflies)
 const sizeLevel = ref(1) // Default is index 1 (medium size)
-const selectedColors = ref(['#ddff11']) // Default is yellow
+const selectedColors = ref([DEFAULT_COLOR]) // Default is yellow
 const isInfoOpen = ref(false)
 
 const handleSpeedChange = (newLevel) => {

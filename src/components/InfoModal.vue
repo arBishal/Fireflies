@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import Tooltip from './Tooltip.vue'
+import { DEFAULT_COLOR } from '../constants/constants.js'
 
 const emit = defineEmits(['update:isOpen'])
 
@@ -12,7 +13,7 @@ const props = defineProps({
   },
   selectedColor: {
     type: String,
-    default: '#ddff11',
+    default: DEFAULT_COLOR,
   },
 })
 

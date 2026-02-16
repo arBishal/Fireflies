@@ -28,3 +28,5 @@ export const COLOR_OPTIONS = [
   '#aaff77', // lime green
   '#93C5FD', // blueish white
 ]
+
+export const DEFAULT_COLOR = COLOR_OPTIONS[0]

@@ -7,7 +7,7 @@ import {
   ArrowsPointingOutIcon,
 } from '@heroicons/vue/24/outline'
 
-import { PRESETS, COLOR_OPTIONS } from '../constants/constants.js'
+import { PRESETS, COLOR_OPTIONS, DEFAULT_COLOR } from '../constants/constants.js'
 import Tooltip from './Tooltip.vue'
 
 const emit = defineEmits(['update:speedLevel', 'update:countLevel', 'update:sizeLevel', 'update:selectedColors'])
@@ -18,7 +18,7 @@ const activeSection = ref(null)
 const fireflyCountLevel = ref(1)
 const speedLevel = ref(1)
 const sizeLevel = ref(1)
-const selectedColors = ref(['#ddff11'])
+const selectedColors = ref([DEFAULT_COLOR])
 const isFaded = ref(false)
 let fadeTimer = null
 

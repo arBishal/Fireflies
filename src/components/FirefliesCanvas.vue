@@ -1,6 +1,18 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS } from '../constants/constants.js'
+import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS, DEFAULT_COLOR } from '../constants/constants.js'
+
+// Helper to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null
+}
 
 const props = defineProps({
   speedLevel: {
@@ -17,7 +29,7 @@ const props = defineProps({
   },
   selectedColors: {
     type: Array,
-    default: () => ['#fdff01'],
+    default: () => [DEFAULT_COLOR],
   },
 })
 
@@ -81,7 +93,7 @@ onMounted(() => {
   }
 
   // Function to create a firefly
-  const createFirefly = (sizeRange, color = '#FDE047') => ({
+  const createFirefly = (sizeRange, color = DEFAULT_COLOR) => ({
     x: Math.random() * w,
     y: Math.random() * h,
     r: Math.random() * (sizeRange.max - sizeRange.min) + sizeRange.min,
@@ -250,17 +262,8 @@ onMounted(() => {
       ctx.beginPath()
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2)
       
-      // Convert hex color to RGB for alpha blending
-      const hexToRgb = (hex) => {
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim())
-        return result ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-        } : { r: 255, g: 255, b: 0 }
-      }
-      
-      const rgb = hexToRgb(f.color)
+      // Draw firefly
+      const rgb = hexToRgb(f.color) || { r: 255, g: 255, b: 0 }
       ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${f.alpha})`
       ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${f.alpha})`
       ctx.shadowBlur = 8
