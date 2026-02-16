@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="fixed bottom-4 right-1/2 translate-x-1/2 z-50 w-fit backdrop-blur-xs text-white transition-opacity duration-500"
+    class="fixed bottom-4 right-1/2 translate-x-1/2 z-50 w-fit backdrop-blur-xs text-neutral-100 transition-opacity duration-500"
     :class="{ 'opacity-25': isFaded, 'opacity-100': !isFaded }"
     ref="root"
     @click.stop
@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
     @mouseleave="handleMouseLeave"
   >
     <div
-      class="flex justify-center items-center gap-4 md:gap-6 mt-2 border border-white/20 px-4 py-2 md:px-6 md:py-3 rounded-full"
+      class="flex justify-center items-center gap-4 md:gap-6 border border-neutral-100/20 px-4 py-2 md:px-8 md:py-3 rounded-full"
     >
       <!-- COUNT -->
       <ControlSection 
@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
               class="flex items-center justify-center p-2 transition-all duration-300"
               :class="
                 fireflyCountLevel === index
-                  ? 'bg-white/20 rounded-full'
+                  ? 'bg-neutral-100/20 rounded-full'
                   : 'opacity-50 hover:opacity-100'
               "
               :aria-label="'Set population to ' + preset.label"
@@ -120,7 +120,7 @@ onBeforeUnmount(() => {
               @click="speedLevel = index; emit('update:speedLevel', index)"
               class="flex items-center justify-center p-2 transition-all duration-300"
               :class="
-                speedLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
+                speedLevel === index ? 'bg-neutral-100/20 rounded-full' : 'opacity-50 hover:opacity-100'
               "
               :aria-label="'Set speed to ' + preset.label"
             >
@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
               @click="sizeLevel = index; emit('update:sizeLevel', index)"
               class="flex items-center justify-center p-2 transition-all duration-300"
               :class="
-                sizeLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
+                sizeLevel === index ? 'bg-neutral-100/20 rounded-full' : 'opacity-50 hover:opacity-100'
               "
               :aria-label="'Set size to ' + preset.label"
             >
@@ -175,10 +175,10 @@ onBeforeUnmount(() => {
               :key="color"
               :style="{ backgroundColor: color }"
               @click="toggleColor(color)"
-              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300 focus:outline-none focus:ring-2 focus:ring-white"
+              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300 focus:outline-none focus:ring-2 focus:ring-neutral-100"
               :class="
                 selectedColors.includes(color)
-                  ? 'ring-2 ring-offset-1 ring-white/50'
+                  ? 'ring-2 ring-offset-1 ring-neutral-100/50'
                   : 'opacity-50 hover:opacity-80'
               "
               :aria-label="'Select color ' + color"

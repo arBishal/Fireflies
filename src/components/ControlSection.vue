@@ -20,10 +20,10 @@ const emit = defineEmits(['toggle'])
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative flex items-center justify-center">
     <Tooltip :text="tooltipText">
       <button 
-        class="flex flex-col items-center text-xs" 
+        class="flex justify-center items-center w-full h-full" 
         @click="$emit('toggle')"
         :aria-label="tooltipText"
         :aria-expanded="isActive"
@@ -51,7 +51,7 @@ const emit = defineEmits(['toggle'])
       <div
         v-if="isActive"
         id="control-content"
-        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md rounded-2xl p-2 border border-white/10 flex flex-col gap-2 min-w-[max-content]"
+        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md flex flex-col gap-2 min-w-[max-content]"
         role="region"
         :aria-label="tooltipText + ' controls'"
       >

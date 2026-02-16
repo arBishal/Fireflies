@@ -1,49 +1,80 @@
-# Fireflies
+# Fireflies 🌟
+
+> A mesmerizing, interactive firefly simulation that brings the magic of nature to your screen.
+
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat-square&logo=vue.js)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 This simulation was inspired by personal fascination and nostalgia for fireflies. As these luminous insects are sadly declining due to habitat loss, pollution, and light interference, this project serves as a small tribute—preserving their magic in code.
 
-This is a responsive, interactive firefly animation built with Vue 3 and the Canvas API. Fireflies drift across the screen, pulse with light, and react to user interaction.
+Built with **Vue 3** and the **Canvas API**, fireflies drift naturally across the screen, pulse with light, and react dynamically to your interactions.
 
-[Try Live Demo](https://fireflies-canvas.vercel.app/)
+[**Try Live Demo**](https://fireflies-canvas.vercel.app/)
+
+## Features
+
+- **Interactive Physics**: Fireflies are gently attracted to the cursor and scatter when clicked.
+- **Dynamic Controls**: Adjust population density, movement speed, and size in real-time.
+- **Theming**: Choose from preset color themes (Golden Yellow, Lime Green, Blueish White).
+- **Responsive Design**: Optimized for both desktop and mobile experiences.
+- **Accessibility**: Keyboard navigable controls and screen-reader friendly interface.
 
 ## Tech Stack
 
-- Vue 3 (Composition API)
-- Canvas API
-- Tailwind CSS (for layout only)
-- Vite
+- **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
+- **Rendering**: HTML5 Canvas API
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Icons**: [Heroicons](https://heroicons.com/)
 
-## Planned Features
+## Getting Started
 
-These features are planned for future updates:
+### Prerequisites
 
-- [x] A control bar to adjust firefly speed, size, and count.
-- [x] Color theme support for firefly glow (e.g. soft yellow, lime green, blueish white).
-- [ ] Background music for an immersive atmosphere.
-- [ ] Background canvas design options (e.g. pitch dark, night forest).
+- Node.js (v16+ recommended)
+- npm or yarn
 
-## Project Setup
+### Installation
 
-```sh
-npm install
-```
+1.  **Clone the repository**
+    ```sh
+    git clone https://github.com/arBishal/Fireflies.git
+    cd Fireflies
+    ```
 
-### Compile and Hot-Reload for Development
+2.  **Install dependencies**
+    ```sh
+    npm install
+    ```
 
-```sh
-npm run dev
-```
+3.  **Run development server**
+    ```sh
+    npm run dev
+    ```
 
-### Compile and Minify for Production
+4.  **Build for production**
+    ```sh
+    npm run build
+    ```
 
-```sh
-npm run build
-```
+## Roadmap
 
-## Recommended IDE Setup
+- [x] Control bar to adjust speed, size, and count.
+- [x] Color theme support.
+- [x] Mobile responsiveness and touch support.
+- [ ] Background music / ambient sound.
+- [ ] Custom background options (e.g., Night Forest).
+
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue for bug reports or feature requests. You can also fork the repository and make your own version to your liking.
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Recommended Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
