@@ -1,9 +1,7 @@
 import {
-  ChevronDoubleDownIcon,
   ChevronDownIcon,
   ArrowPathIcon,
   ChevronUpIcon,
-  ChevronDoubleUpIcon,
 } from '@heroicons/vue/24/outline'
 
 // Icon-based preset levels

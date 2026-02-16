@@ -76,15 +76,20 @@ export function useFireflyPhysics() {
                 const dx = f.x - f.repelStartX
                 const dy = f.y - f.repelStartY
                 f.repelDistanceTraveled = Math.sqrt(dx * dx + dy * dy)
-                if (f.repelDistanceTraveled >= FIREFLY_CONFIG.INTERACTION_RADIUS) {
+                if (f.repelDistanceTraveled > FIREFLY_CONFIG.INTERACTION_RADIUS + f.r) {
                     f.repelled = false
                 }
             }
 
-            // Velocity decay
-            f.vx *= 0.9
-            f.vy *= 0.9
-        } else if (!f.repelled && mouse.x !== null && mouse.y !== null) {
+            // Velocity decay (less friction when repelled to travel further)
+            const decay = f.repelled ? 0.95 : 0.9
+            f.vx *= decay
+            f.vy *= decay
+        } else {
+            f.repelled = false
+        }
+
+        if (!f.repelled && mouse.x !== null && mouse.y !== null) {
             // Attraction
             const dx = mouse.x - f.x
             const dy = mouse.y - f.y
@@ -94,12 +99,7 @@ export function useFireflyPhysics() {
                 const attractionStrength = FIREFLY_CONFIG.ATTRACTION_STRENGTH
                 f.x += dx * attractionStrength
                 f.y += dy * attractionStrength
-            } else {
-                // Reset repelled status if far enough
-                f.repelled = false
             }
-        } else {
-            f.repelled = false
         }
 
         // Base drift
