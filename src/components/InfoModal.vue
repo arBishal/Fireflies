@@ -53,6 +53,7 @@ onBeforeUnmount(() => {
         class="text-white transition-all duration-300 active:scale-90"
         @mouseenter="$event.currentTarget.style.color = selectedColor"
         @mouseleave="$event.currentTarget.style.color = ''"
+        aria-label="Open Info Modal"
       >
         <InformationCircleIcon class="w-8 h-8" />
       </button>
@@ -72,6 +73,9 @@ onBeforeUnmount(() => {
       v-if="isOpen"
       class="fixed top-16 right-4 z-40"
       @click.stop
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
     >
       <!-- Dropdown Content -->
       <div
@@ -81,12 +85,13 @@ onBeforeUnmount(() => {
         <button
           @click="toggleModal"
           class="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+          aria-label="Close Info Modal"
         >
           <XMarkIcon class="w-5 h-5" />
         </button>
 
         <!-- Content -->
-        <h2 class="text-2xl font-bold mb-4">Fireflies</h2>
+        <h2 id="modal-title" class="text-2xl font-bold mb-4">Fireflies</h2>
         <div class="space-y-3 text-sm text-white/80">
           <p>A mesmerizing canvas of glowing fireflies that react to your touch.</p>
           

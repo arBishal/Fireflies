@@ -25,6 +25,9 @@ const emit = defineEmits(['toggle'])
       <button 
         class="flex flex-col items-center text-xs" 
         @click="$emit('toggle')"
+        :aria-label="tooltipText"
+        :aria-expanded="isActive"
+        aria-controls="control-content"
       >
         <div 
           class="transition-all duration-300 active:scale-90"
@@ -47,7 +50,10 @@ const emit = defineEmits(['toggle'])
     >
       <div
         v-if="isActive"
+        id="control-content"
         class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md rounded-2xl p-2 border border-white/10 flex flex-col gap-2 min-w-[max-content]"
+        role="region"
+        :aria-label="tooltipText + ' controls'"
       >
         <slot name="content"></slot>
       </div>

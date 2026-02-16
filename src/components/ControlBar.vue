@@ -94,6 +94,7 @@ onBeforeUnmount(() => {
                   ? 'bg-white/20 rounded-full'
                   : 'opacity-50 hover:opacity-100'
               "
+              :aria-label="'Set population to ' + preset.label"
             >
               <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -121,6 +122,7 @@ onBeforeUnmount(() => {
               :class="
                 speedLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
               "
+              :aria-label="'Set speed to ' + preset.label"
             >
               <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -148,6 +150,7 @@ onBeforeUnmount(() => {
               :class="
                 sizeLevel === index ? 'bg-white/20 rounded-full' : 'opacity-50 hover:opacity-100'
               "
+              :aria-label="'Set size to ' + preset.label"
             >
               <component :is="preset.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -167,18 +170,19 @@ onBeforeUnmount(() => {
         </template>
         <template #content>
           <div class="flex gap-4 bg-black/80 rounded-xl px-4 py-3">
-            <div
+            <button
               v-for="color in COLOR_OPTIONS"
               :key="color"
               :style="{ backgroundColor: color }"
               @click="toggleColor(color)"
-              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300"
+              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 cursor-pointer transition duration-300 focus:outline-none focus:ring-2 focus:ring-white"
               :class="
                 selectedColors.includes(color)
                   ? 'ring-2 ring-offset-1 ring-white/50'
                   : 'opacity-50 hover:opacity-80'
               "
-            ></div>
+              :aria-label="'Select color ' + color"
+            ></button>
           </div>
         </template>
       </ControlSection>
