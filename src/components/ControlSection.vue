@@ -51,7 +51,7 @@ const emit = defineEmits(['toggle'])
       <div
         v-if="isActive"
         id="control-content"
-        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md rounded-2xl p-2 border border-white/10 flex flex-col gap-2 min-w-[max-content]"
+        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md rounded-2xl p-2 border border-neutral-100/10 flex flex-col gap-2 min-w-[max-content]"
         role="region"
         :aria-label="tooltipText + ' controls'"
       >

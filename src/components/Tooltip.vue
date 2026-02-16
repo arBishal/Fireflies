@@ -49,7 +49,7 @@ const positionClasses = computed(() => {
     >
       <div
         v-if="isVisible"
-        class="absolute left-1/2 -translate-x-1/2 z-50 px-2 py-1 text-xs text-white bg-black/50 rounded-full whitespace-nowrap pointer-events-none mb-5 bottom-full"
+        class="absolute left-1/2 -translate-x-1/2 z-50 px-2 py-1 text-xs text-neutral-100 bg-black/50 rounded-full whitespace-nowrap pointer-events-none mb-5 bottom-full"
       >
         {{ text }}
       </div>
