@@ -17,9 +17,10 @@ This is a responsive, interactive firefly animation built with Vue 3 and the Can
 
 These features are planned for future updates:
 
-- A control bar to adjust firefly speed, size, and count.
-- Color theme support for firefly glow (e.g. gold, jade, neon).
-- Background music for an immersive atmosphere.
+- [x] A control bar to adjust firefly speed, size, and count.
+- [x] Color theme support for firefly glow (e.g. soft yellow, lime green, blueish white).
+- [ ] Background music for an immersive atmosphere.
+- [ ] Background canvas design options (e.g. pitch dark, night forest).
 
 ## Project Setup
 
