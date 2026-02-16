@@ -3,6 +3,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import Tooltip from './Tooltip.vue'
 import { DEFAULT_COLOR } from '../constants/constants.js'
+import { useAutoFade } from '../composables/useAutoFade.js'
 
 const emit = defineEmits(['update:isOpen'])
 
@@ -17,24 +18,7 @@ const props = defineProps({
   },
 })
 
-const isFaded = ref(false)
-let fadeTimer = null
-
-const startFadeTimer = () => {
-  clearTimeout(fadeTimer)
-  fadeTimer = setTimeout(() => {
-    isFaded.value = true
-  }, 10000) // 10 seconds
-}
-
-const handleMouseEnter = () => {
-  isFaded.value = false
-  startFadeTimer()
-}
-
-const handleMouseLeave = () => {
-  startFadeTimer()
-}
+const { isFaded, handleMouseEnter, handleMouseLeave } = useAutoFade()
 
 const toggleModal = () => {
   emit('update:isOpen', !props.isOpen)
@@ -48,12 +32,10 @@ const handleEscape = (e) => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleEscape)
-  startFadeTimer()
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleEscape)
-  clearTimeout(fadeTimer)
 })
 </script>
 

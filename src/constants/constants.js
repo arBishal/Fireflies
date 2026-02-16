@@ -30,3 +30,22 @@ export const COLOR_OPTIONS = [
 ]
 
 export const DEFAULT_COLOR = COLOR_OPTIONS[0]
+
+// Breakpoints
+export const BREAKPOINTS = {
+  SM: 640,
+  MD: 768,
+}
+
+// Logic Constants
+export const FIREFLY_CONFIG = {
+  MIN_ALPHA: 0.1,
+  MAX_ALPHA: 1,
+  PULSE_SPEED: 0.015,
+  SPEED_RANGE_X: [-0.5, 0.5],
+  SPEED_RANGE_Y: [-0.5, 0.5],
+  INTERACTION_RADIUS: 160,
+  REPEL_FORCE: 3,
+  REPEL_MULTIPLIER: 2,
+  ATTRACTION_STRENGTH: 0.01,
+}

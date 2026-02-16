@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS, DEFAULT_COLOR } from '../constants/constants.js'
+import { SPEED_LEVELS, FIREFLY_COUNT_LEVELS, SIZE_LEVELS, DEFAULT_COLOR, BREAKPOINTS, FIREFLY_CONFIG } from '../constants/constants.js'
 
 // Helper to convert hex to rgb
 const hexToRgb = (hex) => {
@@ -45,7 +45,7 @@ onMounted(() => {
   let h = (el.height = window.innerHeight)
 
   const mouse = { x: null, y: null }
-  const interactionRadius = 160
+  const interactionRadius = FIREFLY_CONFIG.INTERACTION_RADIUS
 
   // Resize handler
   const handleResize = () => {
@@ -72,18 +72,11 @@ onMounted(() => {
     }
   }
 
-  // Firefly Config
-  const minAlpha = 0.1
-  const maxAlpha = 1
-  const pulseSpeed = 0.015
-  const speedRangeX = [-0.5, 0.5]
-  const speedRangeY = [-0.5, 0.5]
-
   // Screen size multiplier for population (Tailwind breakpoints)
   const getScreenSizeMultiplier = () => {
     const width = window.innerWidth
-    if (width < 640) return 0.5  // Below sm
-    if (width < 768) return 0.75 // Below md
+    if (width < BREAKPOINTS.SM) return 0.5  // Below sm
+    if (width < BREAKPOINTS.MD) return 0.75 // Below md
     return 1 // md and above
   }
 
@@ -97,9 +90,9 @@ onMounted(() => {
     x: Math.random() * w,
     y: Math.random() * h,
     r: Math.random() * (sizeRange.max - sizeRange.min) + sizeRange.min,
-    dx: Math.random() * (speedRangeX[1] - speedRangeX[0]) + speedRangeX[0],
-    dy: Math.random() * (speedRangeY[1] - speedRangeY[0]) + speedRangeY[0],
-    alpha: Math.random() * (maxAlpha - minAlpha) + minAlpha,
+    dx: Math.random() * (FIREFLY_CONFIG.SPEED_RANGE_X[1] - FIREFLY_CONFIG.SPEED_RANGE_X[0]) + FIREFLY_CONFIG.SPEED_RANGE_X[0],
+    dy: Math.random() * (FIREFLY_CONFIG.SPEED_RANGE_Y[1] - FIREFLY_CONFIG.SPEED_RANGE_Y[0]) + FIREFLY_CONFIG.SPEED_RANGE_Y[0],
+    alpha: Math.random() * (FIREFLY_CONFIG.MAX_ALPHA - FIREFLY_CONFIG.MIN_ALPHA) + FIREFLY_CONFIG.MIN_ALPHA,
     pulseDir: Math.random() > 0.5 ? 1 : -1,
     vx: 0,
     vy: 0,
@@ -187,8 +180,8 @@ onMounted(() => {
       const dy = f.y - mouse.y
       const dist = Math.sqrt(dx * dx + dy * dy)
       if (dist < interactionRadius) {
-        const baseForce = 3 // force
-        const multiplier = 2 // initial speed multiplier
+        const baseForce = FIREFLY_CONFIG.REPEL_FORCE
+        const multiplier = FIREFLY_CONFIG.REPEL_MULTIPLIER
         const normX = dx / dist
         const normY = dy / dist
         f.vx = normX * baseForce * multiplier
@@ -217,12 +210,12 @@ onMounted(() => {
 
     for (let f of fireflies) {
       // Pulsing alpha
-      f.alpha += f.pulseDir * pulseSpeed
-      if (f.alpha >= maxAlpha) {
-        f.alpha = maxAlpha
+      f.alpha += f.pulseDir * FIREFLY_CONFIG.PULSE_SPEED
+      if (f.alpha >= FIREFLY_CONFIG.MAX_ALPHA) {
+        f.alpha = FIREFLY_CONFIG.MAX_ALPHA
         f.pulseDir = -1
-      } else if (f.alpha <= minAlpha) {
-        f.alpha = minAlpha
+      } else if (f.alpha <= FIREFLY_CONFIG.MIN_ALPHA) {
+        f.alpha = FIREFLY_CONFIG.MIN_ALPHA
         f.pulseDir = 1
       }
 
@@ -252,7 +245,7 @@ onMounted(() => {
         const dy = mouse.y - f.y
         const dist = Math.sqrt(dx * dx + dy * dy)
         if (dist < interactionRadius) {
-          const attractionStrength = 0.01
+          const attractionStrength = FIREFLY_CONFIG.ATTRACTION_STRENGTH
           f.x += dx * attractionStrength
           f.y += dy * attractionStrength
         }

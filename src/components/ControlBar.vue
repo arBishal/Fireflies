@@ -9,6 +9,7 @@ import {
 
 import { PRESETS, COLOR_OPTIONS, DEFAULT_COLOR } from '../constants/constants.js'
 import Tooltip from './Tooltip.vue'
+import { useAutoFade } from '../composables/useAutoFade.js'
 
 const emit = defineEmits(['update:speedLevel', 'update:countLevel', 'update:sizeLevel', 'update:selectedColors'])
 
@@ -19,8 +20,6 @@ const fireflyCountLevel = ref(1)
 const speedLevel = ref(1)
 const sizeLevel = ref(1)
 const selectedColors = ref([DEFAULT_COLOR])
-const isFaded = ref(false)
-let fadeTimer = null
 
 const toggleColor = (color) => {
   // Single selection - always replace with the clicked color
@@ -44,32 +43,16 @@ const handleEscape = (e) => {
   }
 }
 
-const startFadeTimer = () => {
-  clearTimeout(fadeTimer)
-  fadeTimer = setTimeout(() => {
-    isFaded.value = true
-  }, 10000) // 10 seconds
-}
-
-const handleMouseEnter = () => {
-  isFaded.value = false
-  startFadeTimer()
-}
-
-const handleMouseLeave = () => {
-  startFadeTimer()
-}
+const { isFaded, handleMouseEnter, handleMouseLeave, startFadeTimer } = useAutoFade()
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
   document.addEventListener('keydown', handleEscape)
-  startFadeTimer() // Start the initial fade timer
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
   document.removeEventListener('keydown', handleEscape)
-  clearTimeout(fadeTimer)
 })
 </script>
 
