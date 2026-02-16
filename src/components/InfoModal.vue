@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
     >
       <!-- Dropdown Content -->
       <div
-        class="bg-black/80 border border-neutral-100/20 rounded-lg px-6 py-4 w-80 text-neutral-100"
+        class="bg-black/80 backdrop-blur-md border border-neutral-100/20 rounded-lg px-6 py-4 w-80 text-neutral-100"
       >
         <!-- Close Button -->
         <button

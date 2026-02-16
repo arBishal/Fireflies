@@ -79,10 +79,21 @@ onMounted(() => {
   
   // Start loop
   animate()
+
+  // Track movement everywhere
+  window.addEventListener('mousemove', handleMouseMove)
+  window.addEventListener('touchmove', handleTouchMove)
+  
+  // Handle start events to initialize mouse position (optional, but good for touch)
+  window.addEventListener('touchstart', handleTouchStart, { passive: true })
 })
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationFrameId)
+  window.removeEventListener('mousemove', handleMouseMove)
+  window.removeEventListener('touchmove', handleTouchMove)
+  window.removeEventListener('touchstart', handleTouchStart)
+  window.removeEventListener('click', handleClick) // Just in case
 })
 </script>
 
@@ -90,9 +101,6 @@ onBeforeUnmount(() => {
   <canvas
     ref="canvas"
     class="fixed inset-0 pointer-events-auto bg-black"
-    @mousemove="handleMouseMove"
-    @touchstart="handleTouchStart"
-    @touchmove="handleTouchMove"
     @click="handleClick"
   ></canvas>
 </template>

@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
     @mouseleave="handleMouseLeave"
   >
     <div
-      class="flex justify-center items-center gap-4 md:gap-6 mt-2 border border-neutral-100/20 px-4 py-2 md:px-6 md:py-3 rounded-full"
+      class="flex justify-center items-center gap-4 md:gap-6 border border-neutral-100/20 px-4 py-2 md:px-8 md:py-3 rounded-full"
     >
       <!-- COUNT -->
       <ControlSection 

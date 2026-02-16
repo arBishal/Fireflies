@@ -15,8 +15,8 @@ export const PRESETS = [
 export const FIREFLY_COUNT_LEVELS = [40, 80, 120]
 export const SPEED_LEVELS = [0.5, 1, 2]
 export const SIZE_LEVELS = [
-  { min: 1, max: 2 },
-  { min: 2, max: 5 },
+  { min: 1, max: 3 },
+  { min: 2, max: 6 },
   { min: 5, max: 8 },
 ]
 
