@@ -45,42 +45,64 @@ const { fireflies, updateFireflies } = useFireflies(props, width, height)
 // Lifecycle
 let animationFrameId
 
+// --- Event Handlers ---
+
+/**
+ * Handles click interactions to repel fireflies.
+ * Attached to the canvas element (or window in some versions).
+ */
 const handleClick = () => {
   repelFireflies(fireflies.value, mouse.x, mouse.y)
 }
 
+/**
+ * Handles touch start interactions.
+ * Updates mouse position and triggers an immediate click/repel effect.
+ * @param {TouchEvent} e - Touch event
+ */
 const handleTouchStart = (e) => {
   const touch = e.touches[0]
   if (touch) {
     mouse.x = touch.clientX
     mouse.y = touch.clientY
-    handleClick()
+    handleClick() // Trigger repel immediately
   }
 }
 
+/**
+ * The Main Animation Loop.
+ * Runs approximately 60 times per second using requestAnimationFrame.
+ */
 const animate = () => {
   const ctx = canvas.value?.getContext('2d')
   if (!ctx) return
 
+  // 1. Clear the canvas for the new frame
   ctx.clearRect(0, 0, width.value, height.value)
+  
+  // 2. Determine current speed multiplier
   const speedMultiplier = SPEED_LEVELS[props.speedLevel]
 
+  // 3. Update and draw each firefly
   for (let f of fireflies.value) {
     updateFirefly(f, width.value, height.value, speedMultiplier)
     drawFirefly(ctx, f)
   }
 
+  // 4. Request the next frame
   animationFrameId = requestAnimationFrame(animate)
 }
 
 onMounted(() => {
-  // Initialize
+  // Initialize fireflies based on default props
   updateFireflies()
   
-  // Start loop
+  // Start the animation loop
   animate()
 
-  // Track movement everywhere
+  // --- Interaction Listeners ---
+  // We attach movement listeners to the window so fireflies track the cursor
+  // even when it's hovering over UI elements (like the control bar).
   window.addEventListener('mousemove', handleMouseMove)
   window.addEventListener('touchmove', handleTouchMove)
   
