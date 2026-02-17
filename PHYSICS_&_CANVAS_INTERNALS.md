@@ -1,4 +1,4 @@
-# Firefly Physics & Canvas Internals 📐
+# Firefly Physics & Canvas Internals
 
 This document dives deep into the **mathematics** and **rendering logic** of the Fireflies simulation. It explains exactly how each firefly is born, how it moves, and how it interacts with the world.
 
@@ -34,7 +34,7 @@ const firefly = {
 
 ---
 
-## 2. The Animation Loop 🔄
+## 2. The Animation Loop
 
 The simulation runs on a loop powered by `requestAnimationFrame`. This method tells the browser "I want to paint a frame" and usually runs at **60 frames per second (FPS)**.
 
@@ -44,7 +44,7 @@ In every frame, we do two things for **every single firefly**:
 
 ---
 
-## 3. Movement Logic (The Math) 🧮
+## 3. Movement Logic (The Math)
 
 ### A. Base Drift
 Every frame, we add the base velocity to the position:
@@ -71,7 +71,7 @@ This is a simple **linear oscillation**.
 
 ---
 
-## 4. Interaction Physics 🖱️
+## 4. Interaction Physics
 
 ### A. Attraction (Hover)
 When the mouse moves, fireflies are gently pulled towards it.
@@ -114,7 +114,7 @@ Eventually, `vx` and `vy` become close to 0, and the firefly returns to its peac
 
 ---
 
-## 5. Canvas Rendering 🎨
+## 5. Canvas Rendering
 
 We use the standard 2D Context API (`ctx`).
 

@@ -21,6 +21,13 @@ Built with **Vue 3** and the **Canvas API**, fireflies drift naturally across th
 - **Responsive Design**: Optimized for both desktop and mobile experiences.
 - **Accessibility**: Keyboard navigable controls and screen-reader friendly interface.
 
+## Documentation
+
+Want to understand how it works? Check out the detailed guides:
+
+-   [**Technical Guide**](./TECHNICAL_GUIDE.md): Introduction to the architecture, components, and Vue features.
+-   [**Physics & Canvas Internals**](./PHYSICS_&_CANVAS_INTERNALS.md): Deep dive into the math, logic, and rendering engine.
+
 ## Tech Stack
 
 - **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
