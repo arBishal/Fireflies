@@ -73,6 +73,7 @@ Want to understand how it works? Check out the detailed guides:
 - [x] Mobile responsiveness and touch support.
 - [ ] Background music / ambient sound.
 - [ ] Custom background options (e.g., Night Forest).
+- [ ] Introduce Game of Life mode.
 
 ## Contributing
 
