@@ -22,9 +22,9 @@ export const SIZE_LEVELS = [
 
 // Color palette options (Tailwind colors)
 export const COLOR_OPTIONS = [
-  '#ddff11', // yellow
-  '#aaff77', // lime green
-  '#93C5FD', // blueish white
+  '#e0ff14', // yellow
+  '#90ff74', // lime green
+  '#94c8fc', // blueish white
 ]
 
 export const DEFAULT_COLOR = COLOR_OPTIONS[0]
