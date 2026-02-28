@@ -44,20 +44,25 @@ const { fireflies, updateFireflies } = useFireflies(props, width, height)
 
 // Lifecycle
 let animationFrameId
+let touchHandled = false
 
 // --- Event Handlers ---
 
 /**
  * Handles click interactions to repel fireflies.
- * Attached to the canvas element (or window in some versions).
+ * Guarded against synthetic click events fired by the browser after touch.
  */
 const handleClick = () => {
+  if (touchHandled) {
+    touchHandled = false
+    return
+  }
   repelFireflies(fireflies.value, mouse.x, mouse.y)
 }
 
 /**
  * Handles touch start interactions.
- * Updates mouse position and triggers an immediate click/repel effect.
+ * Only updates mouse position so the attraction logic takes effect.
  * @param {TouchEvent} e - Touch event
  */
 const handleTouchStart = (e) => {
@@ -65,8 +70,20 @@ const handleTouchStart = (e) => {
   if (touch) {
     mouse.x = touch.clientX
     mouse.y = touch.clientY
-    handleClick() // Trigger repel immediately
   }
+}
+
+/**
+ * Handles touch end interactions.
+ * Repels fireflies from the last known touch position and clears the mouse.
+ */
+const handleTouchEnd = () => {
+  if (mouse.x !== null && mouse.y !== null) {
+    repelFireflies(fireflies.value, mouse.x, mouse.y)
+  }
+  mouse.x = null
+  mouse.y = null
+  touchHandled = true
 }
 
 /**
@@ -108,6 +125,7 @@ onMounted(() => {
   
   // Handle start events to initialize mouse position (optional, but good for touch)
   window.addEventListener('touchstart', handleTouchStart, { passive: true })
+  window.addEventListener('touchend', handleTouchEnd)
 })
 
 onBeforeUnmount(() => {
@@ -115,6 +133,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('mousemove', handleMouseMove)
   window.removeEventListener('touchmove', handleTouchMove)
   window.removeEventListener('touchstart', handleTouchStart)
+  window.removeEventListener('touchend', handleTouchEnd)
   window.removeEventListener('click', handleClick) // Just in case
 })
 </script>
