@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted } from 'vue'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
 import Tooltip from './Tooltip.vue'
 import { DEFAULT_COLOR } from '../constants/constants.js'
 import { useAutoFade } from '../composables/useAutoFade.js'
+import { useEscapeKey } from '../composables/useEscapeKey.js'
 
 const emit = defineEmits(['update:isOpen'])
 
@@ -26,15 +27,11 @@ const toggleModal = () => {
   emit('update:isOpen', !props.isOpen)
 }
 
-const handleEscape = (e) => {
-  if (e.key === 'Escape' && props.isOpen) {
-    emit('update:isOpen', false)
-  }
-}
+useEscapeKey(() => {
+  if (props.isOpen) emit('update:isOpen', false)
+})
 
 onMounted(() => {
-  document.addEventListener('keydown', handleEscape)
-  
   // Fetch GitHub stars
   fetch('https://api.github.com/repos/arBishal/Fireflies')
     .then(res => res.json())
@@ -42,10 +39,6 @@ onMounted(() => {
       starCount.value = data.stargazers_count
     })
     .catch(err => console.error('Failed to fetch stars:', err))
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleEscape)
 })
 </script>
 
@@ -107,9 +100,9 @@ onBeforeUnmount(() => {
           
           <div>
             <h3 class="font-semibold text-neutral-100/90 mb-2">Interactions</h3>
-            <ul class="space-y-1 list-disc list-inside marker:text-neutral-100/60">
-              <li>Movee the cursor to attract fireflies.</li>
-              <li>Click to scatter them away.</li>
+            <ul class="space-y-2 list-disc list-inside marker:text-neutral-100/60">
+              <li><span class="font-medium text-neutral-100">Desktop:</span> Move cursor to attract, click to scatter.</li>
+              <li><span class="font-medium text-neutral-100">Mobile:</span> Touch and hold to attract, swipe to guide, and release to scatter. (Quick tap also scatters)</li>
             </ul>
           </div>
 
@@ -122,7 +115,7 @@ onBeforeUnmount(() => {
           </div>
 
           <!-- GitHub Link & Stars -->
-          <div class="border-t border-neutral-100/20 pt-2 mt-4 flex flex items-center justify-between gap-2">
+          <div class="border-t border-neutral-100/20 pt-2 mt-4 flex items-center justify-between gap-2">
             <a
               href="https://github.com/arBishal/Fireflies"
               target="_blank"

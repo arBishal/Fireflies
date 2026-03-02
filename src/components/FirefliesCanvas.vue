@@ -49,6 +49,15 @@ let touchHandled = false
 // --- Event Handlers ---
 
 /**
+ * Clears mouse position when the cursor leaves the window,
+ * preventing fireflies from attracting to a stale position.
+ */
+const handleMouseLeave = () => {
+  mouse.x = null
+  mouse.y = null
+}
+
+/**
  * Handles click interactions to repel fireflies.
  * Guarded against synthetic click events fired by the browser after touch.
  */
@@ -121,6 +130,7 @@ onMounted(() => {
   // We attach movement listeners to the window so fireflies track the cursor
   // even when it's hovering over UI elements (like the control bar).
   window.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseleave', handleMouseLeave)
   window.addEventListener('touchmove', handleTouchMove)
   
   // Handle start events to initialize mouse position (optional, but good for touch)
@@ -131,6 +141,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationFrameId)
   window.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseleave', handleMouseLeave)
   window.removeEventListener('touchmove', handleTouchMove)
   window.removeEventListener('touchstart', handleTouchStart)
   window.removeEventListener('touchend', handleTouchEnd)
