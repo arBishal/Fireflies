@@ -1,16 +1,3 @@
-import {
-  ChevronDownIcon,
-  ArrowPathIcon,
-  ChevronUpIcon,
-} from '@heroicons/vue/24/outline'
-
-// Icon-based preset levels
-export const PRESETS = [
-  { label: 'Low', icon: ChevronDownIcon },
-  { label: 'Default', icon: ArrowPathIcon },
-  { label: 'High', icon: ChevronUpIcon },
-]
-
 // Value mappings for each preset level
 export const FIREFLY_COUNT_LEVELS = [40, 80, 120]
 export const SPEED_LEVELS = [0.5, 1, 2]

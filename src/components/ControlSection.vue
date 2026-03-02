@@ -27,7 +27,7 @@ const emit = defineEmits(['toggle'])
         @click="$emit('toggle')"
         :aria-label="tooltipText"
         :aria-expanded="isActive"
-        aria-controls="control-content"
+        :aria-controls="`control-${tooltipText.toLowerCase().replace(/\\s+/g, '-')}`"
       >
         <div 
           class="transition-all duration-300 active:scale-90"
@@ -50,7 +50,7 @@ const emit = defineEmits(['toggle'])
     >
       <div
         v-if="isActive"
-        id="control-content"
+        :id="`control-${tooltipText.toLowerCase().replace(/\s+/g, '-')}`"
         class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-black/80 backdrop-blur-md flex flex-col gap-2 min-w-[max-content]"
         role="region"
         :aria-label="tooltipText + ' controls'"

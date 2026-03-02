@@ -163,10 +163,8 @@ export function useFireflyPhysics() {
         f.y += f.dy * speedMultiplier
 
         // --- 5. Screen Wrapping ---
-        // If firefly leaves screen, wrap to opposite side
-        if (f.x < 0 || f.x > w) f.dx *= -1 // Bounce off sides horizontally? No, logic says bounce DX
-        // Wait, original logic: if x < 0 || x > w, dx *= -1 (Bounce)
-        // Wraps Y:
+        // Bounce off horizontal edges, wrap around vertical edges
+        if (f.x < 0 || f.x > w) f.dx *= -1
         if (f.y < 0) f.y = h
         if (f.y > h) f.y = 0
     }
