@@ -107,9 +107,9 @@ onBeforeUnmount(() => {
           
           <div>
             <h3 class="font-semibold text-neutral-100/90 mb-2">Interactions</h3>
-            <ul class="space-y-1 list-disc list-inside marker:text-neutral-100/60">
-              <li>Movee the cursor to attract fireflies.</li>
-              <li>Click to scatter them away.</li>
+            <ul class="space-y-2 list-disc list-inside marker:text-neutral-100/60">
+              <li><span class="font-medium text-neutral-100">Desktop:</span> Move cursor to attract, click to scatter.</li>
+              <li><span class="font-medium text-neutral-100">Mobile:</span> Touch and hold to attract, swipe to guide, and release to scatter. (Quick tap also scatters)</li>
             </ul>
           </div>
 
