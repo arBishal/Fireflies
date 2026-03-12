@@ -50,7 +50,7 @@ onMounted(() => {
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
-    <Tooltip text="Info">
+    <Tooltip text="Info" position="bottom">
       <button
         @click="toggleModal"
         class="text-neutral-100 transition-all duration-300 active:scale-90"
