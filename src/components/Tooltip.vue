@@ -10,12 +10,16 @@ const props = defineProps({
     type: String,
     default: 'top', // top, bottom, left, right
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const isVisible = ref(false)
 
 const showTooltip = () => {
-  isVisible.value = true
+  if (!props.disabled) isVisible.value = true
 }
 
 const hideTooltip = () => {
@@ -25,13 +29,13 @@ const hideTooltip = () => {
 const positionClasses = computed(() => {
   switch (props.position) {
     case 'bottom':
-      return 'top-full mt-3'
+      return 'top-full mt-2'
     case 'left':
-      return 'right-full mr-3'
+      return 'right-full mr-4'
     case 'right':
-      return 'left-full ml-3'
+      return 'left-full ml-4'
     default: // top
-      return 'bottom-full mb-3'
+      return 'bottom-full mb-5'
   }
 })
 </script>

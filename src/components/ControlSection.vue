@@ -21,7 +21,7 @@ const emit = defineEmits(['toggle'])
 
 <template>
   <div class="relative flex items-center justify-center">
-    <Tooltip :text="tooltipText">
+    <Tooltip :text="tooltipText" :disabled="isActive">
       <button 
         class="flex justify-center items-center w-full h-full" 
         @click="$emit('toggle')"
